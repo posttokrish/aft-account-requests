@@ -13,14 +13,9 @@ env:
     AFT_ADMIN_ROLE_ARN: "/aft/config/aft-role-arn"
 
 phases:
-  install:
-    runtime-versions:
-      python: 3.9
-    commands:
-      - pip install boto3 requests
-      
   pre_build:
     commands:
+      # Your existing pre-build commands...
       - echo "Setting up Terraform backend configuration..."
       - |
         cat << EOF > backend.tf
@@ -35,22 +30,24 @@ phases:
           }
         }
         EOF
+      
+      # Create terraform.tfvars file
+      - |
+        cat << EOF > terraform.tfvars
+        aft_admin_role_arn = "${AFT_ADMIN_ROLE_ARN}"
+        EOF
 
   build:
     commands:
-      - echo "Initializing Terraform..."
-      - terraform init
-      - echo "Validating Terraform configuration..."
-      - terraform validate
-      - echo "Planning Terraform changes..."
-      - terraform plan -out=tfplan
-      - echo "Applying Terraform changes..."
-      - terraform apply -auto-approve tfplan
+      - |
+        if [ $TF_DISTRIBUTION = "oss" ]; then
+          echo "Initializing Terraform..."
+          terraform init -no-color
+          
+          echo "Applying Terraform configuration..."
+          terraform apply -no-color --auto-approve -var-file=terraform.tfvars
+        fi
 
   post_build:
     commands:
-      - echo "Account request processing completed"
-
-artifacts:
-  files:
-    - '**/*'
+      - echo "Post-Build"
