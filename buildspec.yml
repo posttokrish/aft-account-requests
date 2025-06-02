@@ -38,15 +38,23 @@ phases:
         EOF
 
   build:
-    commands:
-      - |
-        if [ $TF_DISTRIBUTION = "oss" ]; then
-          echo "Initializing Terraform..."
-          terraform init -no-color
-          
-          echo "Applying Terraform configuration..."
-          terraform apply -no-color --auto-approve -var-file=terraform.tfvars
-        fi
+  commands:
+    - |
+      if [ $TF_DISTRIBUTION = "oss" ]; then
+        echo "Current directory contents:"
+        ls -la
+        
+        echo "Creating terraform.tfvars with required variables"
+        cat << EOF > terraform.tfvars
+        aft_admin_role_arn = "${AFT_ADMIN_ROLE_ARN}"
+        EOF
+        
+        echo "Contents of terraform.tfvars:"
+        cat terraform.tfvars
+        
+        echo "Running Terraform apply with variables"
+        terraform apply -no-color --auto-approve -var-file=terraform.tfvars
+      fi
 
   post_build:
     commands:
