@@ -53,7 +53,7 @@ phases:
         cat terraform.tfvars
         
         echo "Running Terraform apply with variables"
-        terraform apply -no-color --auto-approve -var-file=terraform.tfvars
+        terraform apply -auto-approve -var="aft_admin_role_arn=arn:aws:ssm:us-east-1:746120363643:parameter/aft/config/aft-role-arn"
       fi
 
   post_build:
