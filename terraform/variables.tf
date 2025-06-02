@@ -9,6 +9,7 @@ variable "ct_home_region" {
 variable "aft_admin_role_arn" {
   type        = string
   description = "AFT Admin Role ARN"
+  default = "arn:aws:ssm:us-east-1:746120363643:parameter/aft/config/aft-role-arn"
 }
 
 variable "account_request_table_name" {
