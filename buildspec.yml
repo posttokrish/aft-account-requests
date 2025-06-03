@@ -15,7 +15,6 @@ env:
 phases:
   pre_build:
     commands:
-      # Your existing pre-build commands...
       - echo "Setting up Terraform backend configuration..."
       - |
         cat << EOF > backend.tf
@@ -38,23 +37,18 @@ phases:
         EOF
 
   build:
-  commands:
-    - |
-      if [ $TF_DISTRIBUTION = "oss" ]; then
-        echo "Current directory contents:"
-        ls -la
-        
-        echo "Creating terraform.tfvars with required variables"
-        cat << EOF > terraform.tfvars
-        aft_admin_role_arn = "${AFT_ADMIN_ROLE_ARN}"
-        EOF
-        
-        echo "Contents of terraform.tfvars:"
-        cat terraform.tfvars
-        
-        echo "Running Terraform apply with variables"
-        terraform apply -auto-approve -var="aft_admin_role_arn=arn:aws:ssm:us-east-1:746120363643:parameter/aft/config/aft-role-arn"
-      fi
+    commands:  # Corrected indentation here
+      - |
+        if [ $TF_DISTRIBUTION = "oss" ]; then
+          echo "Current directory contents:"
+          ls -la
+          
+          echo "Contents of terraform.tfvars:"
+          cat terraform.tfvars
+          
+          echo "Running Terraform apply with variables"
+          terraform apply -auto-approve -var="aft_admin_role_arn=arn:aws:ssm:us-east-1:746120363643:parameter/aft/config/aft-role-arn"
+        fi
 
   post_build:
     commands:
