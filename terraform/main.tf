@@ -24,13 +24,13 @@ locals {
 }
 
 # Optional: Metadata tracking
-resource "aws_dynamodb_table_item" "account_request_metadata" {
-  table_name = var.account_request_table_name
-  hash_key   = "id"
-
-  item = jsonencode({
-    id = { S = "latest" }
-    last_updated = { S = timestamp() }
-    account_files = { S = jsonencode(local.account_request_files) }
-  })
-}
+# resource "aws_dynamodb_table_item" "account_request_metadata" {
+#   table_name = var.account_request_table_name
+#   hash_key   = "id"
+#
+#   item = jsonencode({
+#     id = { S = "latest" }
+#     last_updated = { S = timestamp() }
+#     account_files = { S = jsonencode(local.account_request_files) }
+#   })
+# }
