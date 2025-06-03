@@ -2,10 +2,10 @@
 
 provider "aws" {
   region = var.ct_home_region
-  assume_role {
-    role_arn = var.aft_admin_role_arn
-    session_name = "AFT-Account-Request"
-  }
+  #assume_role {
+   # role_arn = var.aft_admin_role_arn
+   # session_name = "AFT-Account-Request"
+  #}
 }
 
 terraform {
