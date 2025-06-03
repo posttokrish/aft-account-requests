@@ -22,6 +22,10 @@ terraform {
 locals {
   account_request_files = fileset("${path.module}/accounts", "*.tf")
 }
+# Process each account request file
+module "account_requests" {
+  source = "${path.module}/accounts"
+}
 
 # Optional: Metadata tracking
 # resource "aws_dynamodb_table_item" "account_request_metadata" {
