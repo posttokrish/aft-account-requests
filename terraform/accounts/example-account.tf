@@ -1,5 +1,5 @@
 module "example_dev_account" {
-  source = "github.com/aws-ia/terraform-aws-control_tower_account_factory//modules/aft-account-request"
+  source = "github.com/aws-ia/terraform-aws-control_tower_account_factory?ref=v1.10.1//modules/aft-account-request"
 
   control_tower_parameters = {
     AccountEmail = "example+hkrigana@amazon.com"
