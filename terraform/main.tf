@@ -22,10 +22,7 @@ terraform {
 locals {
   account_request_files = fileset("${path.module}/accounts", "*.tf")
 }
-# Process each account request file
-module "account_requests" {
-  source = "${path.module}/accounts"
-}
+
 resource "aws_dynamodb_table_item" "account_request_metadata" {  # Use a static name here
   table_name = var.account_request_table_name  # Variables are allowed here
   hash_key   = "id"
