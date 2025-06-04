@@ -1,45 +1,26 @@
-# terraform/main.tf
+module "sandbox" {
+  source = "./modules/aft-account-request"
 
-provider "aws" {
-  region = var.ct_home_region
-  #assume_role {
-   # role_arn = var.aft_admin_role_arn
-   # session_name = "AFT-Account-Request"
-  #}
-}
-
-terraform {
-  required_version = "~> 1.3.0"  # This allows any 1.3.x version
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 4.0.0"
-    }
+  control_tower_parameters = {
+    AccountEmail              = "<ACCOUNT EMAIL>"
+    AccountName               = "sandbox-aft"
+    ManagedOrganizationalUnit = "Learn AFT"
+    SSOUserEmail              = "<SSO EMAIL>"
+    SSOUserFirstName          = "Sandbox"
+    SSOUserLastName           = "AFT"
   }
-}
 
-# Include account requests
-locals {
-  account_request_files = fileset("${path.module}/accounts", "*.tf")
-}
+  account_tags = {
+    "Learn Tutorial" = "AFT"
+  }
 
-resource "aws_dynamodb_table_item" "account_request_metadata" {
-  table_name = "aft-request-metadata"
-  hash_key   = "id"
-  item = jsonencode({
-    id = { S = "latest-${timestamp()}" } # Make this unique
-    last_updated = { S = timestamp() }
-    account_files = { S = jsonencode(local.account_request_files) }
-  })
-}
-# Optional: Metadata tracking
-# resource "aws_dynamodb_table_item" "account_request_metadata" {
-#   table_name = var.account_request_table_name
-#   hash_key   = "id"
-#
-#   item = jsonencode({
-#     id = { S = "latest" }
-#     last_updated = { S = timestamp() }
-#     account_files = { S = jsonencode(local.account_request_files) }
-#   })
-# }
+  change_management_parameters = {
+    change_requested_by = "HashiCorp Learn"
+    change_reason       = "Learn AWS Control Tower Account Factory for Terraform"
+  }
+
+  custom_fields = {
+    group = "non-prod"
+  }
+
+  account_customizations_name = "sandbox"
