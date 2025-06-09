@@ -7,7 +7,7 @@ module "sandbox-10" {
     ManagedOrganizationalUnit = "gss-Sandbox"
     SSOUserEmail     = "admin10+hkrigana@amazon.com"
     SSOUserFirstName = "Krishna10"
-    SSOUserLastName  = "GGGG10"
+    SSOUserLastName  = "GGGG-10"
   }
   account_tags = {
     "Learn Tutorial" = "AFT2"
